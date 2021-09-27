@@ -1,7 +1,3 @@
-.App {
-  text-align: center;
-}
-
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -15,5 +11,7 @@ body {
 }
 
 .App-header {
-  padding-top: 80px;
+  padding: 80px;
+  max-width: 1000px;
+  margin: 0 auto;
 }
