@@ -25,11 +25,11 @@ class Leaderboard extends React.Component {
         }
         return <tr key={player.id}>
           <td>{i+1}</td>
-          <td>{player.id}</td>
           <td>
             {player.elo}{player.matches < 5 && <> (??)</>}
             {delta}
           </td>
+          <td>{player.id}</td>
           <td>{player.wins}/{player.losses}</td>
         </tr>;
       });
@@ -37,8 +37,8 @@ class Leaderboard extends React.Component {
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">Player</th>
             <th scope="col">Rating</th>
+            <th scope="col">Player</th>
             <th scope="col">W/L</th>
           </tr>
         </thead>
