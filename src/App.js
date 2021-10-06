@@ -15,7 +15,6 @@ class Leaderboard extends React.Component {
 
   render() {
     if (this.state.data) {
-      console.log(this.state.data);
       const players = this.state.data.map((player, i) => {
         var delta = <div className="delta text-secondary small">⬤ 0</div>;
         if (player.delta > 0) {
@@ -29,7 +28,7 @@ class Leaderboard extends React.Component {
             {player.elo}{player.matches < 5 && <> (??)</>}
             {delta}
           </td>
-          <td>{player.id}</td>
+          <td>{player.name}</td>
           <td>{player.wins}/{player.losses}</td>
         </tr>;
       });
