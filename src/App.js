@@ -10,7 +10,7 @@ class Leaderboard extends React.Component {
 
   async componentDidMount() {
     const data = await axios.get('https://api.beatquest.com/leaderboard');
-    this.setState({ data: data.data });
+    this.setState({ data: data.data.data });
   }
 
   render() {
