@@ -22,13 +22,20 @@ class Leaderboard extends React.Component {
         } else if (player.delta < 0) {
           delta = <div className="delta text-danger small">▼ {player.delta}</div>;
         }
+        var color = {
+          CM: '#e47d22',
+          QM: '#cfd2d3',
+          BM: '#f0f328',
+          SM: '#a0ddd1',
+          LM: '#51ebfd'
+        }[player.rank];
         return <tr key={player.id}>
           <td>{i+1}</td>
           <td>
             {player.elo}{player.matches < 5 && <> (??)</>}
             {delta}
           </td>
-          <td>{player.name}</td>
+          <td>{player.rank !== 'N' && <><span className="badge badge-secondary" style={{backgroundColor: color}}><span class="icon"><img alt={player.rank} src={player.rank + '.svg'}/></span> {player.rank}</span>&nbsp; </>}{player.name}</td>
           <td>{player.wins}/{player.losses}</td>
         </tr>;
       });

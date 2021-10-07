@@ -15,3 +15,31 @@ body {
   max-width: 1000px;
   margin: 0 auto;
 }
+
+
+.badge {
+  position: relative;
+  overflow: hidden;
+  height: 32px;
+  padding-left: 44px;
+  padding-right: 12px;
+  transform: translateY(6px);
+
+  .icon {
+    background: rgba(255,255,255,0.5);
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    height: 32px;
+    width: 32px;
+
+    img {
+      height: 24px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+}
