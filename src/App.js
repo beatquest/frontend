@@ -2,6 +2,12 @@ import React from 'react';
 import logo from './logo.svg';
 import axios from 'axios';
 
+import cm from './cm.svg';
+import qm from './qm.svg';
+import bm from './bm.svg';
+import sm from './sm.svg';
+import lm from './lm.svg';
+
 class Leaderboard extends React.Component {
   constructor(props) {
     super(props);
@@ -29,13 +35,20 @@ class Leaderboard extends React.Component {
           SM: '#a0ddd1',
           LM: '#51ebfd'
         }[player.rank];
+        var icon = {
+          CM: cm,
+          QM: qm,
+          BM: bm,
+          SM: sm,
+          LM: lm
+        }[player.rank];
         return <tr key={player.id}>
           <td>{i+1}</td>
           <td>
             {player.elo}{player.matches < 5 && <> (??)</>}
             {delta}
           </td>
-          <td>{player.rank !== 'N' && <><span className="badge badge-secondary" style={{backgroundColor: color}}><span class="icon"><img alt={player.rank} src={player.rank + '.svg'}/></span> {player.rank}</span>&nbsp; </>}{player.name}</td>
+          <td>{player.rank !== 'N' && <><span className="badge badge-secondary" style={{backgroundColor: color}}><span class="icon"><img alt={player.rank} src={icon}/></span> {player.rank}</span>&nbsp; </>}{player.name}</td>
           <td>{player.wins}/{player.losses}</td>
         </tr>;
       });
