@@ -76,12 +76,31 @@ class Leaderboard extends React.Component {
 }
 
 function App() {
+  var color = {
+    CM: '#e47d22',
+    QM: '#cfd2d3',
+    BM: '#f0f328',
+    SM: '#a0ddd1',
+    LM: '#51ebfd'
+  };
+  var icon = {
+    CM: cm,
+    QM: qm,
+    BM: bm,
+    SM: sm,
+    LM: lm
+  };
   return (
     <div className="App">
       <header className="App-header">
         <div className="text-center">
           <img src={logo} className="App-logo" alt="logo" />
-          <p>Beat Saber Competitive Rankings</p>
+          <p>Beat Saber Competitive Rankings</p><br/>
+          <p><span className="badge badge-secondary" style={{backgroundColor: color.CM}}><span class="icon"><img alt='CM' src={icon.CM}/></span> CM</span> Candidate Master: Has played 5+ matches and 1500+ peak elo</p>
+          <p><span className="badge badge-secondary" style={{backgroundColor: color.QM}}><span class="icon"><img alt='CM' src={icon.QM}/></span> QM</span> Quest Master: Has played 5+ matches and 1800+ peak elo</p>
+          <p><span className="badge badge-secondary" style={{backgroundColor: color.BM}}><span class="icon"><img alt='CM' src={icon.BM}/></span> BM</span> Beat Master: Has played 5+ matches and 2000+ peak elo</p>
+          <p><span className="badge badge-secondary" style={{backgroundColor: color.SM}}><span class="icon"><img alt='CM' src={icon.SM}/></span> SM</span> Saber Master: Has 2200+ peak elo and 5+ norm matches</p>
+          <p><span className="badge badge-secondary" style={{backgroundColor: color.LM}}><span class="icon"><img alt='CM' src={icon.LM}/></span> LM</span> Legendary Master: Has achieved SM and 2500+ peak elo</p>
         </div>
         <Leaderboard />
       </header>
