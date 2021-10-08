@@ -48,8 +48,13 @@ class Leaderboard extends React.Component {
             {player.elo}{player.matches < 5 && <> (??)</>}
             {delta}
           </td>
-          <td>{player.rank !== 'N' && <><span className="badge badge-secondary" style={{backgroundColor: color}}><span class="icon"><img alt={player.rank} src={icon}/></span> {player.rank}</span>&nbsp; </>}{player.name}</td>
-          <td>{player.wins}/{player.losses}</td>
+          <td>
+            <img src={player.image} alt={player.name} className="profile" />
+            {player.name}
+            {player.rank !== 'N' && <><br/><span className="badge badge-secondary" style={{backgroundColor: color}}><span class="icon"><img alt={player.rank} src={icon}/></span> {player.rank}</span></>}
+          </td>
+          <td>{player.matches} Matches<br/><span className="text-muted">{player.wins + player.losses} Maps</span></td>
+          <td>{player.wins}/{player.losses}<br/><span className="text-muted">{player.norms} Norms</span></td>
         </tr>;
       });
       return <table className="table table-dark mt-5">
@@ -58,6 +63,7 @@ class Leaderboard extends React.Component {
             <th scope="col">#</th>
             <th scope="col">Rating</th>
             <th scope="col">Player</th>
+            <th scope="col">Matches</th>
             <th scope="col">W/L</th>
           </tr>
         </thead>
