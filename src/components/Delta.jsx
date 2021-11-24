@@ -1,5 +1,4 @@
 const Delta = ({ delta }) => {
-  console.log(delta);
   let deltaUI = <span className="delta text-secondary small">⬤ 0</span>;
   if (delta > 0) {
     deltaUI = (
