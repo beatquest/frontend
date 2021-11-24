@@ -3,11 +3,14 @@ import { LineChart, Line, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import Rank from './Rank';
+import Delta from './Delta';
+import { Link } from 'react-router-dom';
 
 const UserPage = () => {
   const location = useLocation();
   const [user, setUser] = useState(null);
   const [graphData, setGraphData] = useState([]);
+  const [matches, setMatches] = useState();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -24,18 +27,77 @@ const UserPage = () => {
     makeGraphData();
   }, [user]);
 
+  const isWin = (delta) => {
+    return delta > 0;
+  };
+
   const makeGraphData = () => {
     if (!user) return;
     let data = [];
+
     const matches = user.matches.sort(function (a, b) {
       var dateA = new Date(a.time),
         dateB = new Date(b.time);
-      return dateA - dateB;
+      return dateB - dateA;
     });
-    for (const match of matches) {
-      console.log(match);
+    for (const match of matches.reverse()) {
+      console.log(match.p1);
       data.push({ elo: parseInt(match.p1.elo.after) });
     }
+
+    const matchesUI = user.matches.map((match) => {
+      const player = user.name == match.p1.name ? 'p1' : 'p2';
+      let win;
+      player == 'p1'
+        ? (win = isWin(match.p1.elo.delta))
+        : (win = isWin(match.p2.elo.delta));
+      const resultUI =
+        win == true ? (
+          <div class="text-success">W</div>
+        ) : (
+          <div class="text-danger">L</div>
+        );
+
+      return (
+        <tr>
+          <td>
+            <img src={match.event.image} height={75} />
+          </td>
+          <td>
+            <div>
+              {
+                <Link
+                  style={{ textDecoration: 'none', color: 'white' }}
+                  to={`/user/${match.p1.id}`}
+                >
+                  {match.p1.name}
+                </Link>
+              }{' '}
+              <Delta delta={match.p1.elo.delta} />
+            </div>
+            {
+              <Link
+                style={{ textDecoration: 'none', color: 'white' }}
+                to={`/user/${match.p2.id}`}
+              >
+                {match.p2.name}
+              </Link>
+            }{' '}
+            <Delta delta={match.p2.elo.delta} />
+          </td>
+          <td class="text-center">
+            <div>{match.p1.score}</div>
+            {match.p2.score}
+          </td>
+          <td class="text-center align-middle">{resultUI}</td>
+          <td class=" align-middle">
+            {new Date(match.time).toLocaleDateString()}
+          </td>
+        </tr>
+      );
+    });
+
+    setMatches(matchesUI);
     setGraphData(data);
   };
 
@@ -142,18 +204,12 @@ const UserPage = () => {
                 <tr>
                   <th scope="col">Event</th>
                   <th scope="col">Players</th>
+                  <th scope="col">Score</th>
                   <th scope="col">Result</th>
                   <th scope="col">Date</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">1</th>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                </tr>
-              </tbody>
+              <tbody>{matches}</tbody>
             </table>
           </div>
         </div>

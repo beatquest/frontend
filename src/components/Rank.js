@@ -31,7 +31,7 @@ const Rank = ({ rank }) => {
           <span class="icon">
             <img alt={rank} src={icon} />
           </span>
-          {rank}
+          <span>{rank}</span>
         </span>
       )}
     </>
