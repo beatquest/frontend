@@ -57,7 +57,7 @@ class Leaderboard extends React.Component {
             </td>
             <td>
               <img src={player.image} alt={player.name} className="profile" />
-              {<Link to={`/${player.name}`}>{player.name}</Link>}
+              {<Link to={`/user/${player.id}`}>{player.name}</Link>}
               {player.rank !== 'N' && (
                 <>
                   <br />

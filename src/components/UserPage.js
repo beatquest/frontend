@@ -1,13 +1,5 @@
 import { useEffect, useState } from 'react';
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-} from 'recharts';
+import { LineChart, Line, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import Rank from './Rank';
@@ -15,58 +7,58 @@ import Rank from './Rank';
 const UserPage = () => {
   const location = useLocation();
   const [user, setUser] = useState(null);
-
-  console.log(user);
+  const [graphData, setGraphData] = useState([]);
 
   useEffect(() => {
     const fetchUser = async () => {
-      const users = (await axios.get('https://api.beatquest.com/leaderboard'))
-        .data.data;
-      setUser(
-        users.find((user) => user.name === location.pathname.split('/')[1])
-      );
+      if (location.pathname) {
+        const uid = location.pathname.split('/')[2];
+        const user = await axios.get(`https://api.beatquest.com/user/${uid}`);
+        setUser(user.data.data);
+      }
     };
     fetchUser();
   }, [location]);
 
-  const data = [
-    {
-      name: 'Page A',
-      uv: 4000,
-      pv: 2400,
-      amt: 2400,
-    },
-    {
-      name: 'Page B',
-      uv: 3000,
-      pv: 1398,
-      amt: 2210,
-    },
-    {
-      name: 'Page D',
-      uv: 2780,
-      pv: 3908,
-      amt: 2000,
-    },
-    {
-      name: 'Page E',
-      uv: 1890,
-      pv: 4800,
-      amt: 2181,
-    },
-    {
-      name: 'Page F',
-      uv: 2390,
-      pv: 3800,
-      amt: 2500,
-    },
-    {
-      name: 'Page G',
-      uv: 3490,
-      pv: 4300,
-      amt: 2100,
-    },
-  ];
+  useEffect(() => {
+    makeGraphData();
+  }, [user]);
+
+  const makeGraphData = () => {
+    if (!user) return;
+    let data = [];
+    const matches = user.matches.sort(function (a, b) {
+      var dateA = new Date(a.time),
+        dateB = new Date(b.time);
+      return dateA - dateB;
+    });
+    for (const match of matches) {
+      console.log(match);
+      data.push({ elo: parseInt(match.p1.elo.after) });
+    }
+    setGraphData(data);
+  };
+
+  const renderDurationTooltip = (o) => {
+    const { payload } = o;
+    if (payload.length) {
+      return (
+        <div
+          style={{
+            textAlign: 'center',
+            backgroundColor: 'black',
+            padding: '2px 10px',
+            borderRadius: '10px',
+            opacity: 0.9,
+            fontSize: 20,
+          }}
+        >
+          Elo: {payload[0].payload.elo}
+        </div>
+      );
+    }
+    return null;
+  };
 
   return (
     <div>
@@ -95,7 +87,7 @@ const UserPage = () => {
                     </div>
                     <div class="d-flex justify-content-between">
                       <div>Matches</div>
-                      <div>{user.matches}</div>
+                      <div>{user.matches.length}</div>
                     </div>
                     <div class="d-flex justify-content-between text-muted">
                       <div>Norms</div>
@@ -109,32 +101,60 @@ const UserPage = () => {
                 </div>
               </div>
             </div>
-
+            <h2 class="mx-auto mt-1"> Elo Rating</h2>
             <LineChart
-              className="mx-auto mx-5 mb-5"
+              className="mx-auto m-4"
               width={800}
               height={300}
-              data={data}
+              data={graphData}
               margin={{
-                top: 5,
+                top: 10,
                 right: 30,
                 left: 20,
-                bottom: 5,
+                bottom: 10,
               }}
             >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
+              <CartesianGrid strokeDasharray="3 3" verticalPoints={[1000]} />
+              <YAxis
+                interval={0}
+                domain={[500, 3000]}
+                ticks={[500, 1000, 1500, 2000, 2500, 3000]}
+                style={{
+                  fontSize: '1.5rem',
+                }}
+              />
+              <Tooltip content={renderDurationTooltip} />
+
               <Line
                 type="monotone"
-                dataKey="pv"
+                dataKey="elo"
                 stroke="#8884d8"
-                activeDot={{ r: 8 }}
+                dot={false}
               />
-              <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
             </LineChart>
+
+            <h2 class="mx-auto mt-5"> Recent Matches</h2>
+            <table
+              class="table table-dark m-4 mx-auto"
+              style={{ width: 775, fontSize: 25 }}
+            >
+              <thead>
+                <tr>
+                  <th scope="col">Event</th>
+                  <th scope="col">Players</th>
+                  <th scope="col">Result</th>
+                  <th scope="col">Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">1</th>
+                  <td>Mark</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       ) : (
