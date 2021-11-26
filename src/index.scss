@@ -18,6 +18,7 @@ body {
 
 img.profile {
   height: 85px;
+  width: 85px;
   border-radius: 50%;
   float: left;
   margin-right: 16px;
@@ -52,4 +53,22 @@ img.profile {
 td,th {
   white-space: nowrap;
   padding: 8px 16px !important;
+  border-collapse: collapse;
+  border-bottom: 1px solid #282c34;
+}
+
+td {
+  font-size: 24px;
+}
+
+
+th {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+h1 {
+  font-weight: bolder;
+  font-size: 64px;
+  justify-content: left;
 }
