@@ -61,6 +61,10 @@ td {
   font-size: 24px;
 }
 
+.EventDescription, .EventDescription>* {
+  font-size: 18px;
+  font-family: monospace;
+}
 
 th {
   font-size: 32px;
@@ -71,4 +75,14 @@ h1 {
   font-weight: bolder;
   font-size: 64px;
   justify-content: left;
+}
+
+// Link Formatting
+
+a:visited, a:link {
+  text-decoration: none;
+}
+
+a:active, a:hover  {
+  text-decoration: underline;
 }
