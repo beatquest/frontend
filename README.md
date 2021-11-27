@@ -1,12 +1,14 @@
-# Beatquest - Beat Saber Player Elo and Tournament Tracker
+# Beatquest
 
-> 253A Final Project Fall 2021
+> *A Beat Saber Player Elo and Tournament Tracker*
+>
+> **Built For**: UC Berkeley Info 253A (Fall 2021) Final Project
 >
 > [Beatquest Website](https://beatquest.com)
 
 # API Specs
 
-* API Endpoint: [https://api.beatquest.com](https://api.beatquest.com)
+* **API Endpoint**: [https://api.beatquest.com](https://api.beatquest.com)
 
 ## Leaderboard Specs
 
