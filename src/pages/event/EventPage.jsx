@@ -20,7 +20,6 @@ export function EventPage() {
     const location = useLocation();
     const [event, setEvent] = useState(null);
     const [info, setInfo] = useState();
-    //TODO: Render matches
     const [matches, setMatches] = useState([]);
 
     useEffect(() => {
@@ -45,16 +44,11 @@ export function EventPage() {
         if (!event) return;
   
         setInfo(event.info);
-        // TODO: Order in a better way
         setMatches(event.matches);
       }
 
       populateUI();
     }, [event]);
-
-    
-
-    
 
     const sortByLatestDate = (a, b) => {
       let dateA = new Date(a.time),
@@ -62,17 +56,25 @@ export function EventPage() {
       return dateB - dateA;
     } 
 
-    return info ? (
-      <div className="App-header">
-        <img src={info.image} alt={info.name} className="profile" />
-        <h1 className="eventName">{info.name}</h1>
-        <h3>{renderDateRange(info.dates)}</h3> 
-        <h2 className="description mt-5 mb-3">Description</h2>
-        <EventDescription descrptionHTML={info.description}/>
-        <Links links={info.links} />
-        <Matches matches={matches} />
-      </div>
-    ) : <p>Loading...</p>;
+    return <div className="App-header">
+        {info ? (
+            <div class="event">
+                <img src={info.image} alt={info.name} className="profile" />
+                <h1 className="eventName">{info.name}</h1>
+                <h3>{renderDateRange(info.dates)}</h3>
+                <h2 className="description mt-5 mb-3">Description</h2>
+                <EventDescription descrptionHTML={info.description}/>
+                <Links links={info.links} />
+                <Matches matches={matches} />
+                <Link
+                    style={{ textDecoration: 'none', color: 'white' }}
+                    to={`/events`}
+                >
+                    See all events
+                </Link>
+            </div>
+        ) : <p>Loading...</p>}
+    </div>;
 }
 
 function capitalize(word) {

@@ -15,7 +15,6 @@ export const Matches = ({heading="Recent Matches", matches, someUser=null}) => {
           <tr>
             <td>
               <Link
-                  style={{ textDecoration: 'none', color: 'white' }}
                   to={`/event/${match.event.id}`}
                 >
                 <img src={match.event.image} alt={match.event.image} height={75} />
@@ -24,7 +23,6 @@ export const Matches = ({heading="Recent Matches", matches, someUser=null}) => {
             <td>
               <div>
                 <Link
-                  style={{ textDecoration: 'none', color: 'white' }}
                   to={`/user/${match.p1.id}`}
                 >
                   {match.p1.name}
@@ -32,7 +30,6 @@ export const Matches = ({heading="Recent Matches", matches, someUser=null}) => {
                 <Delta delta={match.p1.elo.delta} />
               </div>
               <Link
-                style={{ textDecoration: 'none', color: 'white' }}
                 to={`/user/${match.p2.id}`}
               >
                 {match.p2.name}
@@ -57,18 +54,17 @@ export const Matches = ({heading="Recent Matches", matches, someUser=null}) => {
           <h2 class="mx-auto mt-5">{heading}</h2>
           <table
           class="table table-dark m-5 mx-auto"
-          style={{ width: 775, fontSize: 25 }}
           >
-          <thead>
-            <tr>
-            <th scope="col">Event</th>
-            <th scope="col">Players</th>
-            <th scope="col">Score</th>
-            {(someUser) ? <th scope="col">Result</th> : <></>}
-            <th scope="col">Date</th>
-            </tr>
-          </thead>
-          <tbody>{matchRows}</tbody>
+            <thead>
+              <tr>
+              <th scope="col">Event</th>
+              <th scope="col">Players</th>
+              <th scope="col">Score</th>
+              {(someUser) ? <th scope="col">Result</th> : <></>}
+              <th scope="col">Date</th>
+              </tr>
+            </thead>
+            <tbody>{matchRows}</tbody>
           </table>
         </div>
     )

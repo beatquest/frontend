@@ -82,8 +82,17 @@ h1 {
 
 a:visited, a:link {
   text-decoration: none;
+  color: white;
 }
 
 a:active, a:hover  {
   text-decoration: underline;
+  color: lightblue;
+}
+
+// Matches
+
+.matches > #table {
+  width: 775;
+  font-size: 24px;
 }

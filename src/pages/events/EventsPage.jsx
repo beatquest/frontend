@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import { getEvents as loadEvents } from './EventsRepository';
+import { Link } from 'react-router-dom';
+import loadEvents from './EventsRepository';
 
 
 export function EventsPage() {
@@ -33,8 +34,10 @@ function EventsTable() {
       return (
         <tr key={eventPreview.id}>
           <td>
-            <img src={eventPreview.image} alt={eventPreview.name} className="profile" />
-            {eventPreview.name}
+            {<Link to={`/event/${eventPreview.id}`}>
+              <img src={eventPreview.image} alt="" className="profile" />
+            </Link>}
+            {<Link to={`/event/${eventPreview.id}`}>{eventPreview.name}</Link>}
           </td>
           <td>{eventPreview.matches} Matches</td>
         </tr>
@@ -45,7 +48,7 @@ function EventsTable() {
       <table className="table table-dark mt-5">
         <thead>
           <tr>
-            <th className="events" scope="col"></th>
+            <th className="events" scope="col">Event</th>
             <th className="matches" scope="col">Matches</th>
           </tr>
         </thead>

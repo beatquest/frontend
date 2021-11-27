@@ -11,7 +11,7 @@ const eventsRoute = "/events";
  * returning an empty array (WIP).
  * @returns Array of events
  */
-export async function getEvents() {
+export default async function loadEvents() {
     let events = [];
     const eventsEndpoint = apiURI + eventsRoute;
     const response = await axios.get(eventsEndpoint);
