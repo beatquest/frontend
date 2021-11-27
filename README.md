@@ -1,70 +1,143 @@
-# Getting Started with Create React App
+# Beatquest - Beat Saber Player Elo and Tournament Tracker
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+> 253A Final Project Fall 2021
+>
+> [Beatquest Website](https://beatquest.com)
 
-## Available Scripts
+# API Specs
 
-In the project directory, you can run:
+* API Endpoint: [https://api.beatquest.com](https://api.beatquest.com)
 
-### `npm start`
+## Leaderboard Specs
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Player Model
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+> `Rank`, `Country` are enums. `UUID` is a Uint.
 
-### `npm test`
+| Property      | Type                |
+|---------------|---------------------|
+| `id`          | `UUID`              |
+| `name`        | `String`            |
+| `location`    | `Country`           |
+| `elo`	        | `int`               |
+| `norms`       | `int`               |
+| `delta`       | `int`               |
+| `matches`     | `int`               |
+| `wins`        | `int`               |
+| `loses`       | `int`               |
+| `rank`        | `Rank`              |
+| `image`       | `URL`               |
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Payload Contract
 
-### `npm run build`
+GET "<API Endpoint>" + /leaderboard
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+OK 200 Response
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+``` json
+{"success":true,"data":[{"id":"386142373622841344","name":"Tseska","country":"FI","elo":2500,"norms":20,"delta":0,"matches":35,"wins":77,"losses":22,"rank":"LM","image":"https://api.beatquest.com/profile/386142373622841344"},{"id":"241387804146270209","name":"cerret","country":"US","elo":2416,"norms":22,"delta":11,"matches":25,"wins":69,"losses":11,"rank":"LM","image":"https://api.beatquest.com/profile/241387804146270209"}]}
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Events Specs
 
-### `npm run eject`
+### Event Preview Model
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+| Property      | Type                |
+|---------------|---------------------|
+| `id`          | `UUID`              |
+| `name`        | `String`            |
+| `image`       | `URL`               |
+| `matches`     | `int`               |
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Payload Contract
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+GET "<API Enpoint>" + /events
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```json
+{"success":true,"data":[{"id":"k_2147484041","name":"BeatKhana!'s Rumble Royale","image":"https://beatkhana.com/assets/images/2147484041.webp","matches":0},{"id":"k_2147484051","name":"Simply Sabers Division AAA","image":"https://beatkhana.com/assets/images/2147484051.webp","matches":0},{"id":"k_2147484061","name":"Beat Saber League Season 1","image":"https://beatkhana.com/assets/images/2147484061.webp","matches":0}]}
+```
 
-## Learn More
+## Event Spec
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Event Model
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+> `data` key
 
-### Code Splitting
+| Property      | Type                |
+|---------------|---------------------|
+| `id`          | `UUID`              |
+| `info`        | `Info`              |
+| `matches`	    | `Match[]`           |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+#### Info Model
 
-### Analyzing the Bundle Size
+| Property      | Type                |
+|---------------|---------------------|
+| `name`        | `String`            |
+| `description` | `String`            |
+| `source`	    | `String`            |
+| `dates`       | `DateDelta`         |
+| `links`       | `Links`             |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+#### Matches Model
 
-### Making a Progressive Web App
+| Property      | Type                |
+|---------------|---------------------|
+| `matches`     | `Match[]`           |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Advanced Configuration
+#### DateDelta Model
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+> Dates are in ISO 8601 format
 
-### Deployment
+| Property      | Type                |
+|---------------|---------------------|
+| `start`       | `Date`              |
+| `end`         | `Date`              |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+#### Links Model
 
-### `npm run build` fails to minify
+| Property      | Type                |
+|---------------|---------------------|
+| `discord`     | `URI`               |
+| `twitch`      | `URI`               |
+| `site`        | `URI`               |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+#### Match Model
+
+| Property      | Type                |
+|---------------|---------------------|
+| `time`        | `ISO8601 Date`      |
+| `p1`          | `Competitor`        |
+| `p2`          | `Competitor`        |
+
+##### Competitor Model
+
+| Property      | Type                |
+|---------------|---------------------|
+| `id`          | `URI`               |
+| `name`        | `String`            |
+| `country`     | `String`            |
+| `elo`         | `EloDelta`          |
+| `rank`        | `RankDelta`         |
+
+###### EloDelta Model
+
+| Property      | Type                |
+|---------------|---------------------|
+| `before`      | `int`               |
+| `after`       | `int`               |
+| `delta`       | `int`               |
+
+###### RankDelta Model
+
+| Property      | Type                |
+|---------------|---------------------|
+| `before`      | `Rank`              |
+| `after`       | `Rank`              |
+
+### Payload Contract
+
+```json
+{"success":true,"data":{"id":"k_2147484231","info":{"name":"AT1 - Austrian Tournament 1","image":"https://beatkhana.com/assets/images/2147484231_ngQevXLTkTKmubF.webp","description":"<p><strong>Welcome to AT1 - Austrian Tournament 1!</strong></p>\n\n<p>AT1 is the first ever Austrian-only Tournament, its a 1v1 - 16 Player, Double-Elimination Style Tournament.<br />\nIf you so happen to have the Austrian Flag on Scoresaber, you are welcomed to sign up!</p>\n\n<p><strong>Disclaimer</strong>: Minimum Signups for Tourney Start: 16</p>\n\n<p><strong>Dates:</strong> Qualifiers 16.5 - 23.5 | Matches 29.5 - 30.5</p>\n\n<p><strong>RESULTS:</strong> #1 Yuni, #2 Aurirex, #3 SirAlpha<br />\n<a href=\"https://docs.google.com/spreadsheets/d/1bEHmc5p55NCxVg9c94io6uMSttTNN_UeAjk0zXGopG4/edit?usp=sharing\" target=\"_blank\">Rules &amp; More Info</a></p>\n\n<p><a href=\"https://www.paypal.com/pools/c/8z6bYG0RdJ\" target=\"_blank\">Donate to the Prize Pool</a></p>\n","source":"BeatKhana","dates":{"start":"2021-05-16T10:00:00.000Z","end":"2021-05-30T10:00:00.000Z"},"links":{"discord":"https://discord.gg/TvRkNY2","twitch":"https://www.twitch.tv/beatsaberaustria","site":"https://beatkhana.com/tournament/2147484231"}},"matches":[{"time":"2021-05-29T16:30:00.000Z","p1":{"id":"156647870093590528","name":"AuriRex","country":"AT","elo":{"before":1788,"after":1849,"delta":61},"rank":{"before":"N","after":"QM"},"score":2},"p2":{"id":"185399459746807808","name":"Jonas","country":"AT","elo":{"before":1500,"after":1439,"delta":-61},"rank":{"before":"N","after":"N"},"score":0},"event":{"id":"k_2147484231","name":"AT1 - Austrian Tournament 1","image":"https://beatkhana.com/assets/images/2147484231_ngQevXLTkTKmubF.webp"}},{"time":"2021-05-29T16:30:00.000Z","p1":{"id":"415859647568936960","name":"Prix","country":"AT","elo":{"before":1500,"after":1256,"delta":-244},"rank":{"before":"N","after":"N"},"score":0},"p2":{"id":"638852503416602625","name":"underswing","country":"AT","elo":{"before":1404,"after":1648,"delta":244},"rank":{"before":"N","after":"N"},"score":2},"event":{"id":"k_2147484231","name":"AT1 - Austrian Tournament 1","image":"https://beatkhana.com/assets/images/2147484231_ngQevXLTkTKmubF.webp"}}
+```
