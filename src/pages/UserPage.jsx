@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { LineChart, Line, YAxis, CartesianGrid, Tooltip } from 'recharts';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import Rank from '../components/Rank';
-import Delta from '../components/Delta';
+import { Matches } from '../components/Matches';
 
 const UserPage = () => {
   const location = useLocation();
@@ -13,97 +13,46 @@ const UserPage = () => {
   console.log(user);
 
   useEffect(() => {
+    const fetchUser = async () => {
+      if (location.pathname) {
+        const uid = location.pathname.split('/')[2];
+        const user = await axios.get(`https://api.beatquest.com/user/${uid}`);
+        user.data.data.matches = user.data.data.matches.sort(function (a, b) {
+          var dateA = new Date(a.time),
+            dateB = new Date(b.time);
+          return dateB - dateA;
+        });
+        setUser(user.data.data);
+      }
+    };
+
     window.scrollTo(0, 0);
     fetchUser();
   }, [location]);
 
   useEffect(() => {
+    const populateUI = () => {
+      if (!user) return;
+  
+      // Populate Elo Rating Graph
+      let ratings = [];
+      const matchesReverse = user.matches.slice().reverse();
+      for (const match of matchesReverse) {
+        const date = new Date(match.time);
+        ratings.push({
+          elo: parseInt(match.p1.elo.after),
+          date: date.toLocaleDateString(),
+        });
+      }
+      setRatings(ratings);
+  
+      // Populate Recent Matches Table
+      const matchesUI = <Matches matches={user.matches} someUser={user} />
+      setMatches(matchesUI);
+    };
     populateUI();
     // eslint-disable-next-line
   }, [user]);
-
-  const fetchUser = async () => {
-    if (location.pathname) {
-      const uid = location.pathname.split('/')[2];
-      const user = await axios.get(`https://api.beatquest.com/user/${uid}`);
-      user.data.data.matches = user.data.data.matches.sort(function (a, b) {
-        var dateA = new Date(a.time),
-          dateB = new Date(b.time);
-        return dateB - dateA;
-      });
-      setUser(user.data.data);
-    }
-  };
-
-  const isWin = (delta) => {
-    return delta > 0;
-  };
-
-  const populateUI = () => {
-    if (!user) return;
-
-    // Populate Elo Rating Graph
-    let ratings = [];
-    const matchesReverse = user.matches.slice().reverse();
-    for (const match of matchesReverse) {
-      const date = new Date(match.time);
-      ratings.push({
-        elo: parseInt(match.p1.elo.after),
-        date: date.toLocaleDateString(),
-      });
-    }
-    setRatings(ratings);
-
-    // Populate Recent Matches Table
-    const matchesUI = user.matches.map((match) => {
-      const player = user.name === match.p1.name ? 'p1' : 'p2';
-      let win;
-      player === 'p1'
-        ? (win = isWin(match.p1.elo.delta))
-        : (win = isWin(match.p2.elo.delta));
-      const resultUI =
-        win === true ? (
-          <div class="text-success">W</div>
-        ) : (
-          <div class="text-danger">L</div>
-        );
-
-      return (
-        <tr>
-          <td>
-            <img src={match.event.image} alt={match.event.image} height={75} />
-          </td>
-          <td>
-            <div>
-              <Link
-                style={{ textDecoration: 'none', color: 'white' }}
-                to={`/user/${match.p1.id}`}
-              >
-                {match.p1.name}
-              </Link>{' '}
-              <Delta delta={match.p1.elo.delta} />
-            </div>
-            <Link
-              style={{ textDecoration: 'none', color: 'white' }}
-              to={`/user/${match.p2.id}`}
-            >
-              {match.p2.name}
-            </Link>{' '}
-            <Delta delta={match.p2.elo.delta} />
-          </td>
-          <td class="text-center">
-            <div>{match.p1.score}</div>
-            {match.p2.score}
-          </td>
-          <td class="text-center align-middle">{resultUI}</td>
-          <td class=" align-middle">
-            {new Date(match.time).toLocaleDateString()}
-          </td>
-        </tr>
-      );
-    });
-    setMatches(matchesUI);
-  };
 
   const renderDurationTooltip = (data) => {
     const { payload } = data;
@@ -194,21 +143,7 @@ const UserPage = () => {
           </LineChart>
 
           <h2 class="mx-auto mt-5"> Recent Matches</h2>
-          <table
-            class="table table-dark m-5 mx-auto"
-            style={{ width: 775, fontSize: 25 }}
-          >
-            <thead>
-              <tr>
-                <th scope="col">Event</th>
-                <th scope="col">Players</th>
-                <th scope="col">Score</th>
-                <th scope="col">Result</th>
-                <th scope="col">Date</th>
-              </tr>
-            </thead>
-            <tbody>{matches}</tbody>
-          </table>
+          {matches}
         </div>
       ) : (
         <></>

@@ -7,56 +7,72 @@ Score: 2-0 (this comes from the players)
 }
 */
 
+// TODO: Sort matches
+
 import React, {useState, useEffect} from 'react';
+import { useLocation, Link } from 'react-router-dom';
 import { loadEvent } from "./EventRepository";
 import parse from 'html-react-parser';
+import { Matches } from '../../components/Matches';
 
-export function EventScreen({ id="k_2147484231" }) {
+export function EventPage() {
 
-    const [info, setInfo] = useState({});
-    const [matches, setMatches] = useState({});
+    const location = useLocation();
+    const [event, setEvent] = useState(null);
+    const [info, setInfo] = useState();
+    //TODO: Render matches
+    const [matches, setMatches] = useState([]);
 
     useEffect(() => {
-        async function fetchEvent() {
-            try{
-                const data = await loadEvent(id);
-                // setEvent(data);
-                console.log(data);
-                setInfo(data.info);
-                setMatches(data.matches);
-            } catch (error) {
-                console.log(error);
-            }
+      // Moved inside the function (see react-hooks/exhaustive-deps)
+      const fetchEvent = async () => {
+        if (location.pathname) {
+          const id = location.pathname.split('/')[2];
+          const data = await loadEvent(id);
+          data.matches = data.matches.sort(sortByLatestDate);
+          setEvent(data);
+  
+          console.log(data);
         }
-        fetchEvent();
-    }, [id]);
+      }
 
-    let eventSources = info.links ? Object.keys(info.links).map((source, _) => {
-        return (
-            <tr key={`source_${source}_${info.id}`}>
-                <td className="sourceName">
-                    <a href={info.links[source]} target="_blank"  rel="noreferrer">
-                        {capitalize(source)}
-                    </a>
-                </td>
-            </tr>
-        )
-    }) : <div>Loading...</div>;
+      window.scrollTo(0,0);
+      fetchEvent();
+    }, [location]);
+
+    useEffect(() => {
+      const populateUI = () => {
+        if (!event) return;
+  
+        setInfo(event.info);
+        // TODO: Order in a better way
+        setMatches(event.matches);
+      }
+
+      populateUI();
+    }, [event]);
+
+    
+
+    
+
+    const sortByLatestDate = (a, b) => {
+      let dateA = new Date(a.time),
+          dateB = new Date(b.time);
+      return dateB - dateA;
+    } 
 
     return info ? (
-        <div className="App-header">
-            <img src={info.image} alt={info.name} className="profile" />
-            <h1 className="eventName">{info.name}</h1>
-            <h3>{renderDateRange(info.dates)}</h3> 
-            <h2 className="description mt-5 mb-3">Description</h2>
-            <EventDescription descrptionHTML={info.description}/>
-            <Links links={info.links} />
-            <h2 className="matches mt-5 mb-3">Matches</h2>
-
-            {/* TODO: Integrate in the other matche table rows, sorted chrnologically? */}
-        </div>
+      <div className="App-header">
+        <img src={info.image} alt={info.name} className="profile" />
+        <h1 className="eventName">{info.name}</h1>
+        <h3>{renderDateRange(info.dates)}</h3> 
+        <h2 className="description mt-5 mb-3">Description</h2>
+        <EventDescription descrptionHTML={info.description}/>
+        <Links links={info.links} />
+        <Matches matches={matches} />
+      </div>
     ) : <p>Loading...</p>;
-    
 }
 
 function capitalize(word) {
@@ -107,3 +123,4 @@ const Links = ({links}) => {
         </div>
     )
 }
+
