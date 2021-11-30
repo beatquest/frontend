@@ -70,7 +70,7 @@ body {
   }
 
   th {
-    font-size: 32px;
+    font-size: 24px;
     font-weight: bold;
   }
 
@@ -97,6 +97,30 @@ body {
   .matches > #table {
     width: 775;
     font-size: 24px;
+  }
+
+  .beatquest-home {
+    td, th {
+      padding: 8px 12px !important;
+    }
+    .col-5 {
+      table {
+        table-layout: fixed;
+        a.event-name {
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          max-width: 100%;
+          display: block;
+        }
+        .event-matches {
+          display: none;
+        }
+        .text-muted.d-none {
+          display: block !important;
+        }
+      }
+    }
   }
 
 }

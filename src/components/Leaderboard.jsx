@@ -88,7 +88,7 @@ class Leaderboard extends React.Component {
         );
       });
       return (
-        <table className="table table-dark mt-5">
+        <table className="table table-dark">
           <thead>
             <tr>
               <th scope="col">#</th>

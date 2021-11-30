@@ -5,7 +5,7 @@ function LeaderboardPage() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Leaderboard</h1>
+        <h1 className="mb-5">Leaderboard</h1>
         <Leaderboard />
       </header>
     </div>

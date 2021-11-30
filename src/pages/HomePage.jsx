@@ -8,6 +8,7 @@ import sm from '../images/sm.svg';
 import lm from '../images/lm.svg';
 
 import Leaderboard from '../components/Leaderboard';
+import EventsTable from './events/EventsTable';
 
 function HomePage() {
   var color = {
@@ -26,7 +27,8 @@ function HomePage() {
   };
 
   return (<>
-    <div className="row mt-5 pt-5">
+    <div className="pt-1"></div>
+    <div className="row mt-3 pt-5 pb-4 mb-3">
       <div className="col-3">
         <img src={logo} className="App-logo" alt="logo" />
       </div>
@@ -94,13 +96,15 @@ function HomePage() {
         </p>
       </div>
     </div>
-    <div className="App">
-      <header className="App-header">
-        <div className="text-center">
-
-        </div>
+    <div className="row beatquest-home">
+      <div className="col-7">
+        <p className="mt-5"><b>Top Players</b></p>
         <Leaderboard />
-      </header>
+      </div>
+      <div className="col-5">
+        <p className="mt-5"><b>Top Events</b></p>
+        <EventsTable />
+      </div>
     </div>
   </>);
 }
