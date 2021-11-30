@@ -33,7 +33,7 @@ const UserPage = () => {
   useEffect(() => {
     const populateUI = () => {
       if (!user) return;
-  
+
       // Populate Elo Rating Graph
       let ratings = [];
       const matchesReverse = user.matches.slice().reverse();
@@ -45,9 +45,9 @@ const UserPage = () => {
         });
       }
       setRatings(ratings);
-  
+
       // Populate Recent Matches Table
-      const matchesUI = <Matches matches={user.matches} someUser={user} />
+      const matchesUI = <Matches matches={user.matches} someUser={user} />;
       setMatches(matchesUI);
     };
     populateUI();
